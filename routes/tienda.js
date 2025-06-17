@@ -3,13 +3,20 @@ const express = require('express');
 
 const appDir = require('../utils/path');
 
+const adminData = require('./admin');
 
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-    // res.send('<h1>Hola desde Express</h1>');
-    // res.sendFile(path.join(__dirname, '..', 'views', 'tienda.html'));
-    res.sendFile(path.join(appDir, 'views', 'tienda.html'));
+    const productos = adminData.productos
+    console.log('Lista de Productos: ',productos);
+    // res.sendFile(path.join(appDir, 'views', 'tienda.html'));
+    res.render('tienda', {
+        prods: productos, 
+        titulo: 'La Tienda', 
+        path: '/', 
+        // hayProductos: productos.length > 0
+    });
 });
 
 module.exports = router;

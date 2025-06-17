@@ -3,28 +3,37 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser')
 
-const adminRoutes = require('./routes/admin')
+const adminData = require('./routes/admin')
 const tiendaRoutes = require('./routes/tienda')
 
 const app = express();
+
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use('/admin', adminRoutes);
+app.use('/admin', adminData.routes);
 app.use(tiendaRoutes);
 
 app.use((req, res, next) => {
     // res.status(404).send('<h1>PAGINA NO ENCONTRADA</h1>');
-    console.log('Viendo que URL el usuario inhresa pero no existe')
+    console.log("Viendo que URL el usuario ingresa que no existe");
     console.log(req.url);
     next();
-});
-
-app.use((req, res) => {
-    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+    //Solo rescibe el request pero no response
+    //prmero realizar una funcion antes de responder
+})
+app.use((req, res, next) => {
+    // responder despues de recibir el request
+    // res.sendFile(path.join(appDir, 'views', 'tienda.html'));
+    res.status(404).render('404', {
+        titulo: 'Pagina No Encontrada', 
+        path: '/404', 
+        // hayProductos: productos.length > 0
+    });
 })
 
 const puerto = 3000;

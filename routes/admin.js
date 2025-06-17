@@ -6,18 +6,19 @@ const appDir = require('../utils/path');
 
 const router = express.Router();
 
+const productos = [];
+
 // /admin/crear-producto
 router.get('/crear-producto', (req, res, next) => {
-    // res.send('<form action="/admin/productos" method="POST"><input type="text" name="nombreproducto"><button type="submit">Crear</button></form>');
-    //res.sendFile(path.join(__dirname, '..', 'views', 'crear-producto.html'));
-    res.sendFile(path.join(appDir, 'views', 'crear-producto.html'));
-
+    res.render('crear-producto', { titulo: 'Crear Producto', path: '/admin/crear-producto' });
 });
 
 // /admin/productos
 router.post('/crear-producto', (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
+    productos.push({nombre: req.body.nombreproducto});
     res.redirect('/')
 });
 
-module.exports = router;
+exports.routes = router;
+exports.productos = productos;
