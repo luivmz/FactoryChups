@@ -7,9 +7,6 @@ const adminRouter = require('./routes/admin');
 const tiendaRoutes = require('./routes/tienda');
 const errorControllers = require('./controllers/error');
 
-
-const Persona = require('./models/persona')
-
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -33,5 +30,4 @@ app.use(errorControllers.get404);
 const puerto = 3000;
 app.listen(puerto, () => {
     console.log("Aplicación ejemplo, http://localhost:"+puerto+"");
-    console.log('Mi aplicacion permite el uso de los siguientes tipos de doc: ', Persona.tiposDeDocumento())
 });

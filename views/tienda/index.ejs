@@ -21,9 +21,7 @@
                             <h2 class="product__price">S/ <%= producto.precio %></h2>
                             <p class="product__description"><%= producto.descripcion %></p>
                         </div>
-                        <div class="card__actions">
-                            <button class="btn">Agregar al carrito</button>
-                        </div>
+                        <%- include('../includes/agregar-al-carrito.ejs', {producto: producto})%>
                     </article>
                 <% } %>
             </div>

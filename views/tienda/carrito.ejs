@@ -1,6 +1,25 @@
 <%- include('../includes/head.ejs') %>
-</head>
-<body>
-    <%- include('../includes/navigation.ejs') %>
-    
-<%- include('../includes/end.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+        <main>
+            <% if (productos.length > 0) { %>
+                <ul>
+                    <% productos.forEach(p => { %>
+                        <li>
+                            <p><%= p.dataProducto.nombre %> (<%= p.cantidad %>)</p>
+                            <form action="/eliminar-producto-carrito" method="POST">
+                                <input type="hidden" value="<%= p.dataProducto.id %>" name="idProducto">
+                                <button class="btn" type="submit">Eliminar</button>
+                            </form>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <h1>No hay productos en el carrito!</h1>
+            <% } %>
+        </main>
+
+        <%- include('../includes/end.ejs') %>
