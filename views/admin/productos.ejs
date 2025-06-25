@@ -23,9 +23,9 @@
                                 <p class="product__description"><%= producto.descripcion %></p>
                             </div>
                             <div class="card__actions">
-                                <a href="/admin/editar-producto/<%= producto.id %>?editar=true" class="btn">Editar</a>
+                                <a href="/admin/editar-producto/<%= producto._id %>?editar=true" class="btn">Editar</a>
                                 <form action="/admin/eliminar-producto" method="POST">
-                                    <input type="hidden" value="<%= producto.id %>" name="idProducto">
+                                    <input type="hidden" value="<%= producto._id %>" name="idProducto">
                                     <button class="btn" type="submit">Eliminar</button>
                                 </form>
     

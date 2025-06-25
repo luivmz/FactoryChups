@@ -1,4 +1,5 @@
 <%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/cart.css">
     </head>
 
     <body>
@@ -6,17 +7,27 @@
 
         <main>
             <% if (productos.length > 0) { %>
-                <ul>
+                <ul class="cart__item-list">
                     <% productos.forEach(p => { %>
-                        <li>
-                            <p><%= p.dataProducto.nombre %> (<%= p.cantidad %>)</p>
+                        <li class="cart__item">
+                            <h1><%= p.nombre %></h1>
+                            <h2>Cantidad: <%= p.cantidad %></h2>
                             <form action="/eliminar-producto-carrito" method="POST">
-                                <input type="hidden" value="<%= p.dataProducto.id %>" name="idProducto">
-                                <button class="btn" type="submit">Eliminar</button>
+                                <input type="hidden" value="<%= p._id %>" name="idProducto">
+                                <button class="btn danger" type="submit">Eliminar</button>
                             </form>
                         </li>
                     <% }) %>
                 </ul>
+
+                <br>
+                <hr>
+                <div class="centered">
+                    <form action="/crear-pedido" method="POST">
+                        <button type="submit" class="btn">Confirmar Pedido!</button>
+                    </form>
+                </div>
+
             <% } else { %>
                 <h1>No hay productos en el carrito!</h1>
             <% } %>

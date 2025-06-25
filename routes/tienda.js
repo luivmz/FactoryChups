@@ -18,5 +18,7 @@ router.post('/eliminar-producto-carrito', tiendaController.postEliminarProductoC
 
 router.get('/pedidos', tiendaController.getPedidos);
 
+router.post('/crear-pedido', tiendaController.postPedido);
+
 
 module.exports = router;
