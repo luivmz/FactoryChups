@@ -1,7 +1,8 @@
 const Producto = require('../models/producto');
+const Pedido = require('../models/pedido');
 
 exports.getProductos = (req, res) => {
-    Producto.fetchAll()
+    Producto.find()
         .then(productos => {
             res.render('tienda/lista-productos', {
                 prods: productos,
@@ -30,7 +31,7 @@ exports.getProducto = (req, res) => {
 }
 
 exports.getIndex = (req, res) => {
-    Producto.fetchAll()
+    Producto.find()
         .then(productos => {
             res.render('tienda/index', {
                 prods: productos,
@@ -44,8 +45,10 @@ exports.getIndex = (req, res) => {
 
 exports.getCarrito = (req, res, next) => {
     req.usuario
-        .getCarrito()
-        .then(productos => {
+        .populate('carrito.items.idProducto')
+        .then(usuario => {
+            console.log(usuario.carrito.items)
+            const productos = usuario.carrito.items;
             res.render('tienda/carrito', {
                 path: '/carrito',
                 titulo: 'Mi Carrito',
@@ -81,7 +84,7 @@ exports.postEliminarProductoCarrito = (req, res, next) => {
 
 exports.getPedidos = (req, res, next) => {
     req.usuario
-        .getPedidos()
+        Pedido.find({ 'usuario.idUsuario': req.usuario._id })
         .then(pedidos => {
             res.render('tienda/pedidos', {
                 path: '/pedidos',
@@ -95,9 +98,25 @@ exports.getPedidos = (req, res, next) => {
 
 exports.postPedido = (req, res, next) => {
     req.usuario
-      .agregarPedido()
-      .then(result => {
-        res.redirect('/pedidos');
-      })
-      .catch(err => console.log(err));
+        .populate('carrito.items.idProducto')
+        .then(usuario => {
+        const productos = usuario.carrito.items.map(i => {
+            return { cantidad: i.cantidad, producto: { ...i.idProducto._doc } };
+        });
+        const pedido = new Pedido({
+            usuario: {
+            nombre: req.usuario.nombre,
+            idUsuario: req.usuario
+            },
+            productos: productos
+        });
+        return pedido.save();
+        })
+        .then(result => {
+            return req.usuario.limpiarCarrito();
+        })
+        .then(() => {
+            res.redirect('/pedidos');
+        })
+        .catch(err => console.log(err));
 };

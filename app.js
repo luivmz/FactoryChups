@@ -3,8 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const database = require('./utils/database');
-const mongoConnect = database.mongoConnect;
+const mongoose = require('mongoose');   
 
 const adminRoutes = require('./routes/admin')
 const tiendaRoutes = require('./routes/tienda')
@@ -22,10 +21,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-    // id de usuario creado en Mongo Atlas: 671c432403f36d5f18a242b4
-    Usuario.findById('671c43736ffe44c3bbe8c44c')
+    Usuario.findById('685cc52ec25af5b5d4d28d76')
         .then(usuario => {
-            req.usuario = new Usuario(usuario.nombre, usuario.email, usuario.carrito, usuario._id);
+            console.log(usuario)
+            req.usuario = usuario;
             next();
         })
         .catch(err => console.log(err));
@@ -38,8 +37,28 @@ app.use(tiendaRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
+mongoose
+  .connect(
+    'mongodb+srv://luisvilameza:secreto@cluster0.rlmvrcz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+  )
+  .then(result => {
+    console.log(result);
+    Usuario.findOne().then(usuario => {
+        if (!usuario) {
+          const usuario = new Usuario({
+            nombre: 'Luisvilameza',
+            email: 'luisvilameza@gmail.com',
+            carrito: {
+              items: []
+            }
+          });
+          usuario.save();
+        }
+      });
     app.listen(3000);
-})
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 

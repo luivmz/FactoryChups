@@ -20,5 +20,7 @@ router.get('/pedidos', tiendaController.getPedidos);
 
 router.post('/crear-pedido', tiendaController.postPedido);
 
+// router.get('/checkout', tiendaController.getCheckout);
+
 
 module.exports = router;
