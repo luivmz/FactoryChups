@@ -51,6 +51,9 @@ exports.postEditarProducto = (req, res, next) => {
     const descripcion = req.body.descripcion;
     Producto.findById(idProducto)
         .then(producto => {
+            if (producto.idUsuario.toString() !== req.usuario._id.toString()) { // el usuario que creo el producto puede editar
+                return res.redirect('/');
+            }
             producto.nombre = nombre;
             producto.precio = precio;
             producto.descripcion = descripcion;
@@ -66,8 +69,10 @@ exports.postEditarProducto = (req, res, next) => {
 
 
 
-exports.getProductos = (req, res) => {
-    Producto.find()
+exports.getProductos = (req, res, next) => {
+    Producto
+        // .find()
+        .find({ idUsuario: req.usuario._id })
         .then(productos => {
             res.render('admin/productos', {
                 prods: productos,
@@ -82,7 +87,7 @@ exports.getProductos = (req, res) => {
 
 exports.postEliminarProducto = (req, res, next) => {
     const idProducto = req.body.idProducto;
-    Producto.findByIdAndDelete(idProducto)
+    Producto.deleteOne({ _id: idProducto, idUsuario: req.usuario._id }) // es una condición donde verifica si los id mandados son iguales
         .then(result => {
             console.log('Producto eliminado satisfactoriamente');
             res.redirect('/admin/productos');

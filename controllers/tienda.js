@@ -110,7 +110,7 @@ exports.postPedido = (req, res, next) => {
         });
         const pedido = new Pedido({
             usuario: {
-            nombre: req.usuario.email,
+            nombre: req.usuario.nombre,
             idUsuario: req.usuario
             },
             productos: productos

@@ -10,4 +10,9 @@ router.post('/registrarse', authController.postRegistrarse);
 
 router.post('/salir', authController.postSalir);
 
+router.get('/reinicio', authController.getReinicio);
+router.post('/reinicio', authController.postReinicio);
+router.get('/reinicio/:token', authController.getNuevoPassword);
+router.post('/nuevo-password', authController.postNuevoPassword);
+
 module.exports = router;
