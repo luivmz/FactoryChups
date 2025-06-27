@@ -8,6 +8,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const multer = require('multer'); // Leer archivos
 
 const errorController = require('./controllers/error');
 const Usuario = require('./models/usuario');
@@ -26,11 +27,37 @@ const store = new MongoDBStore({
 
 const csrfProtection = csrf();
 
+// Define donde se almacenan los archivos por multer
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'imagenes');
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
+  }
+});
+// Define que tipo de archivos son permitidos
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('imagen'));
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/imagenes', express.static(path.join(__dirname, 'imagenes')));
+
 app.use(session({ secret: 'algo muy secreto', resave: false, saveUninitialized: false, store: store }));
 
 app.use(csrfProtection);
@@ -68,6 +95,7 @@ app.get('/500', errorController.get500);
 app.use(errorController.get404);
 
 app.use((error, req, res, next) => {
+  console.log(error);
   // res.status(error.httpStatusCode).render(...);
   res.redirect('/500');
 });
@@ -75,7 +103,7 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then(result => {
-    console.log(result);
+    // console.log(result);
     // Usuario.findOne().then(usuario => {
     //     if (!usuario) {
     //       const usuario = new Usuario({

@@ -18,8 +18,8 @@ router.post(
             .isString()
             .isLength({ min: 3 })
             .trim(),
-        body('urlImagen')
-            .isURL(),
+        // body('urlImagen')
+            // .isURL(),
         body('precio')
             .isFloat(),
         body('descripcion')
@@ -39,8 +39,8 @@ router.post(
             .isString()
             .isLength({ min: 3 })
             .trim(),
-        body('urlImagen')
-            .isURL(),
+        // body('urlImagen')
+            // .isURL(),
         body('precio')
             .isFloat(),
         body('descripcion', 'La descripcion debe tener no menos de 10 ni mas de 400 caracteres')
@@ -52,6 +52,8 @@ router.post(
 );
 
 router.post('/eliminar-producto', isAuth, adminController.postEliminarProducto);
+
+router.delete('/producto/:idProducto', isAuth, adminController.deleteProducto);
 
 router.get('/productos', isAuth, adminController.getProductos);
 
