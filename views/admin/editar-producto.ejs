@@ -28,6 +28,7 @@
                 <input type="hidden" value="<%= producto._id %>" name="idProducto">
             <% } %>
 
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button class="btn" type="submit"><% if (modoEdicion) { %>Actualizar Producto<% } else { %>Crear Producto<% } %></button>
         </form>
     </main>

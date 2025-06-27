@@ -7,7 +7,8 @@ exports.getProductos = (req, res) => {
             res.render('tienda/lista-productos', {
                 prods: productos,
                 titulo: "Productos de la tienda",
-                path: "/productos"
+                path: "/productos",
+                autenticado: req.session.autenticado
             });
 
         })
@@ -24,7 +25,8 @@ exports.getProducto = (req, res) => {
             res.render('tienda/detalle-producto', {
                 producto: producto,
                 titulo: producto.nombre,
-                path: '/productos'
+                path: '/productos',
+                autenticado: req.session.autenticado
             });
         })
         .catch(err => console.log(err));
@@ -36,7 +38,8 @@ exports.getIndex = (req, res) => {
             res.render('tienda/index', {
                 prods: productos,
                 titulo: "Pagina principal de la Tienda",
-                path: "/"
+                path: "/",
+                autenticado: req.session.autenticado
             });
 
         })
@@ -52,7 +55,8 @@ exports.getCarrito = (req, res, next) => {
             res.render('tienda/carrito', {
                 path: '/carrito',
                 titulo: 'Mi Carrito',
-                productos: productos
+                productos: productos,
+                autenticado: req.session.autenticado
             });
         })
         .catch(err => console.log(err));
@@ -89,7 +93,8 @@ exports.getPedidos = (req, res, next) => {
             res.render('tienda/pedidos', {
                 path: '/pedidos',
                 titulo: 'Mis Pedidos',
-                pedidos: pedidos
+                pedidos: pedidos,
+                autenticado: req.session.autenticado
             });
         })
         .catch(err => console.log(err));
@@ -105,7 +110,7 @@ exports.postPedido = (req, res, next) => {
         });
         const pedido = new Pedido({
             usuario: {
-            nombre: req.usuario.nombre,
+            nombre: req.usuario.email,
             idUsuario: req.usuario
             },
             productos: productos

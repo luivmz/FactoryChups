@@ -11,7 +11,9 @@
             </div>
             <h2>S/ <%= producto.precio %></h2>
             <p><%= producto.descripcion %></p>
-            <%- include('../includes/agregar-al-carrito.ejs') %>
+            <% if (autenticado) { %>
+                <%- include('../includes/agregar-al-carrito.ejs') %>
+            <% } %>
 
         </main>
         <%- include('../includes/end.ejs') %>

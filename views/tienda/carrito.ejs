@@ -14,6 +14,7 @@
                             <h2>Cantidad: <%= p.cantidad %></h2>
                             <form action="/eliminar-producto-carrito" method="POST">
                                 <input type="hidden" value="<%= p.idProducto._id %>" name="idProducto">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <button class="btn danger" type="submit">Eliminar</button>
                             </form>
                         </li>
@@ -24,6 +25,7 @@
                 <hr>
                 <div class="centered">
                     <form action="/crear-pedido" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button type="submit" class="btn">Confirmar Pedido!</button>
                     </form>
                 </div>
