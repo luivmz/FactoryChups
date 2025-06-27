@@ -7,6 +7,18 @@ const usuarioSchema = new Schema({
     type: String,
     required: true
   },
+  nombre: {
+    type: String,
+    required: true
+  },
+  apellido: {
+    type: String,
+    required: true
+  },
+  isadmin: {
+    type: Boolean,
+    required: false
+  },
   password: {
     type: String,
     required: true

@@ -10,6 +10,7 @@ const ITEMS_POR_PAGINA = 2;
 exports.getProductos = (req, res, next) => {
     const pagina = +req.query.pagina || 1;
     let itemsTotales;
+    console.log(req.session.usuario)
     Producto.find()
         .countDocuments()
         .then(numProductos => {
@@ -24,6 +25,7 @@ exports.getProductos = (req, res, next) => {
                 titulo: "Productos de la tienda",
                 path: "/productos",
                 autenticado: req.session.autenticado,
+                isadmin: req.session.usuario ? req.session.usuario.isadmin : false,
                 paginaActual: pagina,
                 tienePaginaSiguiente: ITEMS_POR_PAGINA * pagina < itemsTotales,
                 tienePaginaAnterior: pagina > 1,
@@ -40,6 +42,58 @@ exports.getProductos = (req, res, next) => {
         });
 };
 
+exports.getContacto = (req, res, next) => {
+    res.render('tienda/contacto', {
+        titulo: 'Contáctanos',
+        path: '/contacto',
+        autenticado: req.session.autenticado,
+        isadmin: req.session.usuario ? req.session.usuario.isadmin : false
+    });
+};
+
+exports.acercadenosotros = (req, res, next) => {
+    const miembrosCarrusel = [
+        {
+            nombre: "Luis VilaJulca Laureano Dickmar",
+            descripcion: "Desarrollador Java Full Stack.",
+            foto: "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png?20200919003010",
+            linkedin: "https://www.linkedin.com/"
+        },
+        {
+            nombre: "Jeremias Avellaneda Angel Addair",
+            descripcion: "Desarrollador Java Full Stack.",
+            foto: "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png?20200919003010",
+            linkedin: "https://www.linkedin.com/"
+        },
+                {
+            nombre: "Arana Sanabria Luis",
+            descripcion: "Desarrollador Java Full Stack",
+            foto: "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png?20200919003010",
+            linkedin: "https://www.linkedin.com/"
+        },
+        {
+            nombre: "Giraldez Huaman José Manuel 	",
+            descripcion: "Desarrollador Java Full Stack",
+            foto: "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png?20200919003010",
+            linkedin: "https://www.linkedin.com/"
+        },
+        {
+            nombre: "Vila Meza Luis",
+            descripcion: "Desarrollador Java Full Stack",
+            foto: "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png?20200919003010",
+             linkedin: "https://www.linkedin.com/"
+        },
+    ];
+
+    res.render('tienda/acerca-de-nosotros', {
+        titulo: 'Acerca de Nosotros',
+        path: '/acerca-de-nosotros',
+        autenticado: req.session.autenticado,
+        isadmin: req.session.usuario ? req.session.usuario.isadmin : false,
+        miembrosCarrusel: miembrosCarrusel
+    });
+};
+
 exports.getProducto = (req, res, next) => {
     const idProducto = req.params.idProducto;
     Producto.findById(idProducto)
@@ -51,7 +105,8 @@ exports.getProducto = (req, res, next) => {
                 producto: producto,
                 titulo: producto.nombre,
                 path: '/productos',
-                autenticado: req.session.autenticado
+                autenticado: req.session.autenticado,
+                isadmin: req.session.usuario ? req.session.usuario.isadmin : false,
             });
         })
         .catch(err => {
@@ -79,6 +134,7 @@ exports.getIndex = (req, res, next) => {
                 titulo: 'Tienda',
                 path: '/',
                 paginaActual: pagina,
+                isadmin: req.session.usuario ? req.session.usuario.isadmin : false,
                 tienePaginaSiguiente: ITEMS_POR_PAGINA * pagina < nroProductos,
                 tienePaginaAnterior: pagina > 1,
                 paginaSiguiente: pagina + 1,
@@ -103,7 +159,8 @@ exports.getCarrito = (req, res, next) => {
                 path: '/carrito',
                 titulo: 'Mi Carrito',
                 productos: productos,
-                autenticado: req.session.autenticado
+                autenticado: req.session.autenticado,
+                isadmin: req.session.usuario ? req.session.usuario.isadmin : false,
             });
         })
         .catch(err => {
@@ -153,7 +210,8 @@ exports.getPedidos = (req, res, next) => {
                 path: '/pedidos',
                 titulo: 'Mis Pedidos',
                 pedidos: pedidos,
-                autenticado: req.session.autenticado
+                autenticado: req.session.autenticado,
+                isadmin: req.session.usuario ? req.session.usuario.isadmin : false,
             });
         })
         .catch(err => {

@@ -8,7 +8,7 @@
         <% if (mensajeError) { %>
             <div class="user-message user-message--error"><%= mensajeError %></div>
         <% } %>
-        <form class="login-form" action="/registrarse" method="POST" novalidate>
+                <form class="login-form" action="/registrarse" method="POST" novalidate>
             <div class="form-control">
                 <label for="email">Email</label>
                 <input 
@@ -17,6 +17,24 @@
                     name="email"
                     id="email"
                     value="<%= datosAnteriores.email %>">
+            </div>
+            <div class="form-control">
+                <label for="nombre">Nombre</label>
+                <input
+                    class="<%= erroresValidacion.find(e => e.path === 'nombre') ? 'invalid' : '' %>"
+                    type="text"
+                    name="nombre"
+                    id="nombre"
+                    value="<%= datosAnteriores.nombre %>">
+            </div>
+            <div class="form-control">
+                <label for="apellido">Apellido</label>
+                <input
+                    class="<%= erroresValidacion.find(e => e.path === 'apellido') ? 'invalid' : '' %>"
+                    type="text"
+                    name="apellido"
+                    id="apellido"
+                    value="<%= datosAnteriores.apellido %>">
             </div>
             <div class="form-control">
                 <label for="password">Contraseña</label>
@@ -39,5 +57,6 @@
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button class="btn" type="submit">Registrarse</button>
         </form>
+
     </main>
 <%- include('../includes/end.ejs') %>

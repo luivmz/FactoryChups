@@ -29,12 +29,14 @@
           <li class="nav-item">
             <a class="nav-link <%= path === '/pedidos' ? 'active' : '' %>" href="/pedidos">Pedidos</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link <%= path === '/admin/crear-producto' ? 'active' : '' %>" href="/admin/crear-producto">Crear Producto</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link <%= path === '/admin/productos' ? 'active' : '' %>" href="/admin/productos">Admin Productos</a>
-          </li>
+          <% if (autenticado && isadmin) { %>
+            <li class="nav-item">
+              <a class="nav-link <%= path === '/admin/crear-producto' ? 'active' : '' %>" href="/admin/crear-producto">Crear Producto</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link <%= path === '/admin/productos' ? 'active' : '' %>" href="/admin/productos">Admin Productos</a>
+            </li>
+          <% } %>
         <% } %>
       </ul>
 

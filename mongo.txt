@@ -1,0 +1,7 @@
+luisvilameza
+secreto
+
+mongodb+srv://luisvilameza:<db_password>@cluster0.rlmvrcz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+'mongodb+srv://luisvilameza:secreto@cluster0.rlmvrcz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+
+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

@@ -12,6 +12,7 @@ exports.getCrearProducto = (req, res, next) => {
       modoEdicion: false,
       tieneError: false,
       autenticado: req.session.autenticado,
+      isadmin: req.session.usuario ? req.session.usuario.isadmin : false,
       mensajeError: null,
       erroresValidacion: []
     });
@@ -97,6 +98,7 @@ exports.getEditarProducto = (req, res, next) => {
                 path: '/admin/edit-producto',
                 modoEdicion: modoEdicion,
                 autenticado: req.session.autenticado,
+                isadmin: req.session.usuario ? req.session.usuario.isadmin : false,
                 producto: producto,
                 tieneError: false,
                 mensajeError: null,
@@ -184,6 +186,7 @@ exports.getProductos = (req, res, next) => {
                 titulo: "Administracion de Productos",
                 path: '/admin/productos',
                 autenticado: req.session.autenticado,
+                isadmin: req.session.usuario ? req.session.usuario.isadmin : false,
                 paginaActual: pagina,
                 tienePaginaSiguiente: ITEMS_POR_PAGINA * pagina < itemsTotales,
                 tienePaginaAnterior: pagina > 1,

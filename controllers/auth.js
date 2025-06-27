@@ -8,7 +8,7 @@ const { validationResult } = require('express-validator');
 
 const Usuario = require("../models/usuario");
 
-const APIKEY = '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';
+const APIKEY = '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';
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
@@ -29,6 +29,7 @@ exports.getIngresar = (req, res, next) => {
       path: '/ingresar',
       titulo: 'Ingresar',
       autenticado: false,
+      isadmin: req.session.usuario ? req.session.usuario.isadmin : false,
       mensajeError: mensaje,
       datosAnteriores: {
         email: '',
@@ -113,6 +114,7 @@ exports.getRegistrarse = (req, res, next) => {
     path: '/registrarse',
     titulo: 'Registrarse',
     autenticado: false,
+    isadmin: req.session.usuario ? req.session.usuario.isadmin : false,
     mensajeError: mensaje,
     datosAnteriores: {
       email: '',
@@ -125,46 +127,53 @@ exports.getRegistrarse = (req, res, next) => {
 
 exports.postRegistrarse = (req, res, next) => {
   const email = req.body.email;
+  const nombre = req.body.nombre;
+  const apellido = req.body.apellido;
   const password = req.body.password;
-  
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors.array());
     return res.status(422).render('auth/registrarse', {
       path: '/registrarse',
-      titulo: 'registrarse',
+      titulo: 'Registrarse',
       mensajeError: errors.array()[0].msg,
       datosAnteriores: {
         email: email,
+        nombre: nombre,
+        apellido: apellido,
         password: password,
         passwordConfirmado: req.body.passwordConfirmado
       },
       erroresValidacion: errors.array()
     });
   }
+
   bcrypt
-  .hash(password, 12)
-  .then(hashedPassword => {
-    const usuario = new Usuario({
-      email: email,
-      password: hashedPassword,
-      carrito: { items: [] }
+    .hash(password, 12)
+    .then(hashedPassword => {
+      const usuario = new Usuario({
+              email: email,
+              nombre: nombre,
+              apellido: apellido,
+              isadmin: false,
+              password: hashedPassword,
+              carrito: { items: [] }
+            });
+      return usuario.save();
+    })
+    .then(result => {
+      res.redirect('/ingresar');
+      return transporter.sendMail({
+        to: email,
+        from: 'luisvilameza314@gmail.com',
+        subject: 'Registro Exitoso!!',
+        html: '<h1>¡Se ha dado de alta satisfactoriamente!</h1>'
+      });
+    })
+    .catch(err => {
+      console.log(err);
     });
-    return usuario.save();
-  })
-  .then(result => {
-    res.redirect('/ingresar');
-    return transporter.sendMail({
-      to: email,
-      from: 'luisvilameza314@gmail.com', // Corresponde al email verificado en Sendgrid
-      subject: 'Registro Exitoso!!',
-      html: '<h1>Se ha dado de alta satisfactoriamente!</h1>'
-    });
-  })
-  .catch(err => {
-    console.log(err);
-    console.log(err)
-  });
 };
 
 exports.postSalir = (req, res, next) => {

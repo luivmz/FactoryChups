@@ -9,6 +9,10 @@ router.get('/', tiendaController.getIndex);
 
 router.get('/productos', tiendaController.getProductos);
 
+router.get('/contacto', tiendaController.getContacto);
+
+router.get('/acerca-de-nosotros', tiendaController.acercadenosotros);
+
 router.get('/productos/:idProducto', tiendaController.getProducto);
 
 router.get('/carrito', isAuth, tiendaController.getCarrito);
