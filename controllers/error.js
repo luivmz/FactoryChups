@@ -5,3 +5,11 @@ exports.get404 = (req, res, next) => {
         autenticado: req.session.autenticado
     });
 };
+
+exports.get500 = (req, res, next) => {
+    res.status(500).render('500', {
+      titulo: 'Error!',
+      path: '/500',
+      autenticado: req.session.autenticado
+    });
+};

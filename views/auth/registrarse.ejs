@@ -8,18 +8,33 @@
         <% if (mensajeError) { %>
             <div class="user-message user-message--error"><%= mensajeError %></div>
         <% } %>
-        <form class="login-form" action="/registrarse" method="POST">
+        <form class="login-form" action="/registrarse" method="POST" novalidate>
             <div class="form-control">
                 <label for="email">Email</label>
-                <input type="email" name="email" id="email">
+                <input 
+                    class="<%= erroresValidacion.find(e => e.path === 'email') ? 'invalid' : '' %>"
+                    type="email"
+                    name="email"
+                    id="email"
+                    value="<%= datosAnteriores.email %>">
             </div>
             <div class="form-control">
                 <label for="password">Contraseña</label>
-                <input type="password" name="password" id="password">
+                <input
+                    class="<%= erroresValidacion.find(e => e.path === 'password') ? 'invalid' : '' %>"
+                    type="password"
+                    name="password"
+                    id="password"
+                    value="<%= datosAnteriores.password %>">
             </div>
             <div class="form-control">
                 <label for="passwordConfirmado">Confirmar Contraseña</label>
-                <input type="password" name="passwordConfirmado" id="passwordConfirmado">
+                <input
+                    class="<%= erroresValidacion.find(e => e.path === 'passwordConfirmado') ? 'invalid' : '' %>"
+                    type="password"
+                    name="passwordConfirmado"
+                    id="passwordConfirmado"
+                    value="<%= datosAnteriores.passwordConfirmado %>">
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button class="btn" type="submit">Registrarse</button>

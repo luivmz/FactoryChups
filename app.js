@@ -37,17 +37,20 @@ app.use(csrfProtection);
 app.use(flash());
 
 app.use((req, res, next) => {
-  console.log(req.session);
   if(!req.session.usuario){
     return next();
   }
   Usuario.findById(req.session.usuario._id)
     .then(usuario => {
-      console.log(usuario)
+      if (!usuario) {
+        return next();
+      }
       req.usuario = usuario;
       next();
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      throw new Error(err);
+    });
 
 });
 
@@ -61,8 +64,13 @@ app.use('/admin', adminRoutes);
 app.use(tiendaRoutes);
 app.use(authRoutes);
 
-
+app.get('/500', errorController.get500);
 app.use(errorController.get404);
+
+app.use((error, req, res, next) => {
+  // res.status(error.httpStatusCode).render(...);
+  res.redirect('/500');
+});
 
 mongoose
   .connect(MONGODB_URI)

@@ -1,7 +1,7 @@
 const Producto = require('../models/producto');
 const Pedido = require('../models/pedido');
 
-exports.getProductos = (req, res) => {
+exports.getProductos = (req, res, next) => {
     Producto.find()
         .then(productos => {
             res.render('tienda/lista-productos', {
@@ -12,10 +12,14 @@ exports.getProductos = (req, res) => {
             });
 
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
-exports.getProducto = (req, res) => {
+exports.getProducto = (req, res, next) => {
     const idProducto = req.params.idProducto;
     Producto.findById(idProducto)
         .then(producto => {
@@ -29,10 +33,14 @@ exports.getProducto = (req, res) => {
                 autenticado: req.session.autenticado
             });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 }
 
-exports.getIndex = (req, res) => {
+exports.getIndex = (req, res, next) => {
     Producto.find()
         .then(productos => {
             res.render('tienda/index', {
@@ -43,7 +51,11 @@ exports.getIndex = (req, res) => {
             });
 
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 }
 
 exports.getCarrito = (req, res, next) => {
@@ -59,10 +71,14 @@ exports.getCarrito = (req, res, next) => {
                 autenticado: req.session.autenticado
             });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
-exports.postCarrito = (req, res) => {
+exports.postCarrito = (req, res, next) => {
     const idProducto = req.body.idProducto;
 
     Producto.findById(idProducto)
@@ -73,7 +89,11 @@ exports.postCarrito = (req, res) => {
             console.log(result);
             res.redirect('/carrito');
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 }
 
 exports.postEliminarProductoCarrito = (req, res, next) => {
@@ -82,7 +102,11 @@ exports.postEliminarProductoCarrito = (req, res, next) => {
         .then(result => {
             res.redirect('/carrito');
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 
 };
 
@@ -97,7 +121,11 @@ exports.getPedidos = (req, res, next) => {
                 autenticado: req.session.autenticado
             });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 
@@ -110,7 +138,7 @@ exports.postPedido = (req, res, next) => {
         });
         const pedido = new Pedido({
             usuario: {
-            nombre: req.usuario.nombre,
+            nombre: req.usuario.email, // aca no hay valor para nombre asi que se pone email por el mmomento
             idUsuario: req.usuario
             },
             productos: productos
@@ -123,5 +151,10 @@ exports.postPedido = (req, res, next) => {
         .then(() => {
             res.redirect('/pedidos');
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            console.log(error);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
