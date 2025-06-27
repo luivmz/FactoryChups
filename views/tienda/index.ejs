@@ -1,35 +1,105 @@
 <%- include('../includes/head.ejs') %>
-    <link rel="stylesheet" href="/css/producto.css">
+<link rel="stylesheet" href="/css/producto.css">
 </head>
 
 <body>
-    <%- include('../includes/navigation.ejs') %>
+  <%- include('../includes/navigation.ejs') %>
 
-    <main>
-        <% if (prods.length > 0) { %>
-            <div class="grid">
-                <% for (let producto of prods) { %>
-                    <article class="card product-item">
-                        <header class="card__header">
-                            <h1 class="product__title"><%= producto.nombre %></h1>
-                        </header>
-                        <div class="card__image">
-                            <img src="/<%=producto.urlImagen %>"
-                                alt="<%= producto.nombre %>">
-                        </div>
-                        <div class="card__content">
-                            <h2 class="product__price">S/ <%= producto.precio %></h2>
-                            <p class="product__description"><%= producto.descripcion %></p>
-                        </div>
-                        <% if (autenticado) { %>
-                            <%- include('../includes/agregar-al-carrito.ejs', {producto: producto}) %>
-                        <% } %>
-                    </article>
-                <% } %>
+  <!-- Carrousel de promociones -->
+  <div class="container-fluid my-5">
+    <div class="row justify-content-center">
+      <div class="col-10 col-sm-10">
+        <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+          <div class="cont-mas carousel-inner">
+            <div class="carousel-item active" data-bs-interval="3000">
+              <img src="/image/img-inicio/PROMOCIÓN (1).png" class="d-block w-100" alt="Promoción 1">
             </div>
-            <%- include('../includes/paginacion.ejs') %>
-        <% } else { %>
-            <h1>No hay productos</h1>
-        <% } %>
-    </main>
-<%- include('../includes/end.ejs') %>
+            <div class="carousel-item" data-bs-interval="3000">
+              <img src="/image/img-inicio/PROMOCIÓN (2).png" class="d-block w-100" alt="Promoción 2">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+              <img src="/image/img-inicio/PROMOCIÓN (3).png" class="d-block w-100" alt="Promoción 3">
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Siguiente</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección Lo más vendido -->
+  <div class="cont-mas-vendido container-fluid p-md-4 my-5">
+    <div class="row">
+      <div class="titulos-index col-md-12 text-center">
+        <h2>Lo más vendido</h2>
+      </div>
+    </div>
+
+    <div class="row justify-content-center text-center p-md-5 mb-2">
+      <div class="col-md-3 col-sm-6 mx-2">
+        <img src="/image/img-inicio/banana split PEQ.jpg" class="img-mas-vendido" />
+        <div>
+          <h2>Banna-split</h2>
+          <span>$50.00</span>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6 mx-2">
+        <img src="/image/img-inicio/Amandin_bueno_malo_helados.jpg" class="img-mas-vendido" alt="Helado napolitano" />
+        <div>
+          <h2>Helado napolitano</h2>
+          <span>$50.00</span>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6 mx-2">
+        <img src="/image/img-inicio/paletas.jpg" class="img-mas-vendido" alt="Paleta frutos rojos" />
+        <div>
+          <h2>Paleta frutos rojos</h2>
+          <span>$50.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección Categorías -->
+  <div class="container-fluid p-md-4 my-5">
+    <div class="row">
+      <div class="titulos-index col-md-12 text-center">
+        <h2>Categorías</h2>
+      </div>
+    </div>
+
+    <div class="row justify-content-center text-center p-md-5 mb-2">
+      <div class="col-md-3 col-sm-6 mx-2">
+        <a class="nav-link productos-inicio" href="/productos">
+          <img src="/image/imgs-helado/helado_choco.png" class="img-mas-vendido" />
+          <div><h2>Helados</h2></div>
+        </a>
+      </div>
+
+      <div class="col-md-3 col-sm-6 mx-2">
+        <a class="nav-link productos-inicio" href="/productos">
+          <img src="/image/imgs-paletas/paleta-oreo.png" class="img-mas-vendido" alt="Paletas" />
+          <div><h2>Paletas</h2></div>
+        </a>
+      </div>
+
+      <div class="col-md-3 col-sm-6 mx-2">
+        <a class="nav-link productos-inicio" href="/productos">
+          <img src="https://i.postimg.cc/sxRgBPZ3/agua-horchata-png-remove.png" class="img-mas-vendido" alt="Aguas" />
+          <div><h2>Aguas</h2></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../includes/end.ejs') %>
